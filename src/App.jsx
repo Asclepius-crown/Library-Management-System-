@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage/landing.jsx';
 import CatalogPage from './pages/Catalog/CatalogPage.jsx';
 import DatabasePage from './pages/DatabasePage/DatabasePage.jsx';
 import BorrowedStudentsPage from './pages/Borrowedstudent/BorrowedStudentsPage.jsx';
+import DigitalLibraryPage from './pages/DigitalLibrary/DigitalLibraryPage.jsx';
 import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
 
 function App() {
@@ -56,6 +57,14 @@ function App() {
           element={
             <ProtectedRoute>
               <BorrowedStudentsPage setIsAuthenticated={setIsAuthenticated} />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/digital-library" 
+          element={
+            <ProtectedRoute>
+              <DigitalLibraryPage setIsAuthenticated={setIsAuthenticated} />
             </ProtectedRoute>
           } 
         />

@@ -77,13 +77,13 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
         <div className="landing-container">
             <div className="auth-buttons">
                 <button 
-                    className={`login-btn ${activeForm === 'login' ? 'active' : ''}`}
+                    className={`auth-btn login-btn ${activeForm === 'login' ? 'active' : ''}`}
                     onClick={() => handleAuthClick('login')}
                 >
                     Login
                 </button>
                 <button 
-                    className={`register-btn ${activeForm === 'register' ? 'active' : ''}`}
+                    className={`auth-btn register-btn ${activeForm === 'register' ? 'active' : ''}`}
                     onClick={() => handleAuthClick('register')}
                 >
                     Register
@@ -186,6 +186,33 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
                         <span className="button-icon">📚</span>
                         <span className="button-text">Catalog</span>
                         <p className="button-description">Browse our collection of books</p>
+                    </button>
+                    
+                    <button 
+                        className="nav-button"
+                        onClick={() => navigate('/digital-library')}
+                    >
+                        <span className="button-icon">💻</span>
+                        <span className="button-text">Digital Library</span>
+                        <p className="button-description">Access our digital resources</p>
+                    </button>
+                    
+                    <button 
+                        className="nav-button"
+                        onClick={() => navigate('/database')}
+                    >
+                        <span className="button-icon">📊</span>
+                        <span className="button-text">Database</span>
+                        <p className="button-description">View library statistics</p>
+                    </button>
+                    
+                    <button 
+                        className="nav-button"
+                        onClick={() => navigate('/borrowed-students')}
+                    >
+                        <span className="button-icon">👥</span>
+                        <span className="button-text">Borrowed Books</span>
+                        <p className="button-description">Track borrowed items</p>
                     </button>
                 </nav>
             </div>
