@@ -1,0 +1,122 @@
+/* Existing styles... */
+
+/* Responsive Table/Cards Container */
+.students-container {
+    width: 100%;
+  }
+  
+  /* Mobile Cards View */
+  .mobile-cards {
+    display: none;
+  }
+  
+  .student-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .student-info {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .student-info h3 {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .student-id {
+    color: #666;
+    font-size: 14px;
+    display: block;
+    margin-top: 4px;
+  }
+  
+  .book-info p {
+    margin: 8px 0;
+  }
+  
+  .dates {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  
+  .status {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+  
+  /* Table View */
+  .students-table {
+    width: 100%;
+    display: table;
+  }
+  
+  /* Responsive Breakpoints */
+  @media (max-width: 992px) {
+    .sidebar {
+      width: 200px;
+    }
+    
+    .search-box input {
+      width: 200px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .main-content {
+      flex-direction: column;
+    }
+    
+    .sidebar {
+      width: 100%;
+      border-right: none;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .content-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+    }
+    
+    .search-box input {
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .students-table {
+      display: none;
+    }
+    
+    .mobile-cards {
+      display: block;
+    }
+    
+    .header-section {
+      padding: 15px;
+    }
+    
+    .app-title {
+      font-size: 20px;
+    }
+    
+    .content-header h2 {
+      font-size: 18px;
+    }
+  }
+  
+  /* Status Colors (same as before) */
+  .status-overdue { background-color: #ffebee; color: #d32f2f; }
+  .status-returned { background-color: #e3f7e8; color: #1a9c4a; }
+  .status-not-returned { background-color: #fff8e1; color: #ff8f00; }
