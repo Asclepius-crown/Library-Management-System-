@@ -480,3 +480,43 @@ body {
     width: 100%;
   }
 }
+
+/* Add these at the end of your existing CSS file */
+
+/* Slightly adjust sidebar spacing for longer category names */
+.sidebar-section li {
+  padding: 8px 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Highlight for active category */
+.sidebar-section li.active {
+  font-weight: 600;
+  color: #2a7bf5;
+  background-color: rgba(42, 123, 245, 0.1);
+  border-radius: 4px;
+  padding-left: 8px;
+}
+
+/* Better spacing for the engineering categories section */
+.sidebar-section h3 {
+  margin-bottom: 12px;
+}
+
+/* Make the category dropdown match other selects */
+.modal-body select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 14px;
+  background-color: white;
+}
+
+.modal-body select:focus {
+  outline: none;
+  border-color: #2a7bf5;
+  box-shadow: 0 0 0 2px rgba(42, 123, 245, 0.1);
+}

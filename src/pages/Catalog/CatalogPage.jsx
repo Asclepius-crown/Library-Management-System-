@@ -11,7 +11,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
     return savedBooks ? JSON.parse(savedBooks) : [
       { id: 1, title: 'Let Us C++', author: 'Yashavant Kanetkar', isbn: '978-8183331630', location: 'Shelf A1', status: 'Available', publishedCount: 12, borrower: '', dueDate: '' },
       { id: 2, title: 'BlockChain Quick Reference', author: 'Brenn Hill, Samanyu Chopra, Paul Valencourt', isbn: '978-1788995788', location: 'Shelf B2', status: 'Borrowed', publishedCount: 8, borrower: 'John Doe', dueDate: '2023-12-15' },
-      { id: 3, title: 'Game Programming Pattern', author: 'Robert Nystrom', isbn: '978-0990582908', location: 'Shelf C3', status: 'Borroewd', publishedCount: 15, borrower: '', dueDate: '' },
+      { id: 3, title: 'Game Programming Pattern', author: 'Robert Nystrom', isbn: '978-0990582908', location: 'Shelf C3', status: 'Borrowed', publishedCount: 15, borrower: '', dueDate: '' },
       { id: 4, title: 'Building Android Project with Kotlin', author: 'Pankaj Kumar', isbn: '978-1484268145', location: 'Shelf D4', status: 'Available', publishedCount: 5, borrower: '', dueDate: '' },
     ];
   });
@@ -32,6 +32,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
   const [errors, setErrors] = useState({});
   const [manualUpdateMode, setManualUpdateMode] = useState(false);
   const [currentlyEditingId, setCurrentlyEditingId] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
     localStorage.setItem('libraryBooks', JSON.stringify(books));
@@ -40,7 +41,8 @@ const CatalogPage = ({ setIsAuthenticated }) => {
   const filteredBooks = books.filter(book => {
     const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesAvailability = selectedAvailability === 'All' || book.status === selectedAvailability;
-    return matchesSearch && matchesAvailability;
+    const matchesCategory = selectedCategory === 'All' || book.category === selectedCategory;
+    return matchesSearch && matchesAvailability && matchesCategory;
   });
 
   const handleLogout = () => {
@@ -136,6 +138,10 @@ const CatalogPage = ({ setIsAuthenticated }) => {
     setManualUpdateMode(true);
   };
 
+  const filterByCategory = (category) => {
+    setSelectedCategory(category);
+  };
+
   const resetForm = () => {
     setEditingBook(null);
     setNewBook({
@@ -170,17 +176,22 @@ const CatalogPage = ({ setIsAuthenticated }) => {
             <ul>
               <li className="active">Book Catalog</li>
               <li onClick={() => navigate('/database')}>Database View</li>
-              <li>Reports</li>
+              <li onClick={() => navigate('/borrowed-students')}>Borrowed Students</li>
             </ul>
           </div>
 
           <div className="sidebar-section">
-            <h3>Categories</h3>
+            <h3>Engineering Categories</h3>
             <ul>
-              <li>Programming</li>
-              <li>Science</li>
-              <li>Literature</li>
-              <li>History</li>
+              <li className={selectedCategory === 'All' ? 'active' : ''} onClick={() => filterByCategory('All')}>All Categories</li>
+              <li className={selectedCategory === 'Computer Science' ? 'active' : ''} onClick={() => filterByCategory('Computer Science')}>Computer Science</li>
+              <li className={selectedCategory === 'Electrical Engineering' ? 'active' : ''} onClick={() => filterByCategory('Electrical Engineering')}>Electrical Engineering</li>
+              <li className={selectedCategory === 'Mechanical Engineering' ? 'active' : ''} onClick={() => filterByCategory('Mechanical Engineering')}>Mechanical Engineering</li>
+              <li className={selectedCategory === 'Civil Engineering' ? 'active' : ''} onClick={() => filterByCategory('Civil Engineering')}>Civil Engineering</li>
+              <li className={selectedCategory === 'Chemical Engineering' ? 'active' : ''} onClick={() => filterByCategory('Chemical Engineering')}>Chemical Engineering</li>
+              <li className={selectedCategory === 'Aerospace Engineering' ? 'active' : ''} onClick={() => filterByCategory('Aerospace Engineering')}>Aerospace Engineering</li>
+              <li className={selectedCategory === 'Biomedical Engineering' ? 'active' : ''} onClick={() => filterByCategory('Biomedical Engineering')}>Biomedical Engineering</li>
+              <li className={selectedCategory === 'Environmental Engineering' ? 'active' : ''} onClick={() => filterByCategory('Environmental Engineering')}>Environmental Engineering</li>
             </ul>
           </div>
         </div>
@@ -304,6 +315,20 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                     <label>Location</label>
                     <input type="text" name="location" value={newBook.location} onChange={handleInputChange} />
                   </div>
+                  <div className="form-group">
+                    <label>Category</label>
+                    <select name="category" value={newBook.category || ''} onChange={handleInputChange}>
+                      <option value="">Select a category</option>
+                      <option value="Computer Science">Computer Science</option>
+                      <option value="Electrical Engineering">Electrical Engineering</option>
+                      <option value="Mechanical Engineering">Mechanical Engineering</option>
+                      <option value="Civil Engineering">Civil Engineering</option>
+                      <option value="Chemical Engineering">Chemical Engineering</option>
+                      <option value="Aerospace Engineering">Aerospace Engineering</option>
+                      <option value="Biomedical Engineering">Biomedical Engineering</option>
+                      <option value="Environmental Engineering">Environmental Engineering</option>
+                    </select>
+                  </div>
                   {manualUpdateMode && (
                     <>
                       <div className="form-group">
@@ -333,4 +358,3 @@ const CatalogPage = ({ setIsAuthenticated }) => {
 };
 
 export default CatalogPage;
- 

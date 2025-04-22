@@ -24,7 +24,6 @@ const DatabasePage = () => {
     const saved = localStorage.getItem('libraryStats');
     return saved ? JSON.parse(saved) : {
       borrowedCount: 14,
-      visitors: 24303,
       borrowers: 1200
     };
   });
@@ -68,25 +67,21 @@ const DatabasePage = () => {
 
   return (
     <div className="database-page">
-      <img src={logo} alt="Athenaeum Logo" className="logo" />
+      <header className="page-header">
+        <img src={logo} alt="Athenaeum Logo" className="logo" />
+        <h1>Library Management Dashboard</h1>
+      </header>
 
       <div className="dashboard-container">
-        <h1>Dashboard</h1>
-
         <div className="dashboard-grid">
-          <div className="dashboard-card">
-            <h3>Borrowed books</h3>
+          <div className="dashboard-card stats-card">
+            <div className="card-header">
+              <h3>Library Statistics</h3>
+              <span className="card-icon">📊</span>
+            </div>
             <div className="stats-container">
               <div className="stats-input">
-                <label>Visitors:</label>
-                <input
-                  type="number"
-                  value={stats.visitors}
-                  onChange={(e) => handleUpdateStats('visitors', parseInt(e.target.value) || 0)}
-                />
-              </div>
-              <div className="stats-input">
-                <label>Borrowers:</label>
+                <label>Active Borrowers:</label>
                 <input
                   type="number"
                   value={stats.borrowers}
@@ -96,55 +91,62 @@ const DatabasePage = () => {
             </div>
           </div>
 
-          <div className="dashboard-card">
-            <h3>Overview</h3>
+          <div className="dashboard-card overview-card">
+            <div className="card-header">
+              <h3>Borrowing Overview</h3>
+              <span className="card-icon">📚</span>
+            </div>
             <div className="overdue-count">
-              <p>Overdue books</p>
               <div className="stats-input">
+                <label>Books Borrowed:</label>
                 <input
                   type="number"
                   value={stats.borrowedCount}
                   onChange={(e) => handleUpdateStats('borrowedCount', parseInt(e.target.value) || 0)}
                 />
               </div>
+              <div className="overdue-indicator">
+                <span className="count-badge">{overdueBooks.length}</span>
+                <span>Overdue Books</span>
+              </div>
             </div>
-          </div>
-
-          <div className="dashboard-card">
-            <h3>Library visitors</h3>
-            <h2>{stats.visitors.toLocaleString()}</h2>
           </div>
         </div>
       </div>
 
       <div className="overdue-books-container">
-        <h1>Overdue Book List</h1>
+        <div className="section-header">
+          <h2>Overdue Book Management</h2>
+          <p>Manage and track overdue books and fines</p>
+        </div>
 
         <div className="add-overdue-form">
           <h3>Add New Overdue Entry</h3>
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="Member name"
-              value={newOverdue.member}
-              onChange={(e) => setNewOverdue({ ...newOverdue, member: e.target.value })}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="Overdue period (e.g., 3 days)"
-              value={newOverdue.overdue}
-              onChange={(e) => setNewOverdue({ ...newOverdue, overdue: e.target.value })}
-            />
-          </div>
-          <div className="form-group">
-            <input
-              type="text"
-              placeholder="Fines amount (e.g., Rs100.00)"
-              value={newOverdue.fines}
-              onChange={(e) => setNewOverdue({ ...newOverdue, fines: e.target.value })}
-            />
+          <div className="form-row">
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Member name"
+                value={newOverdue.member}
+                onChange={(e) => setNewOverdue({ ...newOverdue, member: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Overdue period (e.g., 3 days)"
+                value={newOverdue.overdue}
+                onChange={(e) => setNewOverdue({ ...newOverdue, overdue: e.target.value })}
+              />
+            </div>
+            <div className="form-group">
+              <input
+                type="text"
+                placeholder="Fines amount (e.g., Rs100.00)"
+                value={newOverdue.fines}
+                onChange={(e) => setNewOverdue({ ...newOverdue, fines: e.target.value })}
+              />
+            </div>
           </div>
           <button
             className="add-button"
@@ -155,32 +157,34 @@ const DatabasePage = () => {
           </button>
         </div>
 
-        <table>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>MEMBER</th>
-              <th>OVERDUE</th>
-              <th>FINES</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-          <tbody>
-            {overdueBooks.map(book => (
-              <tr key={book.id}>
-                <td>#{book.id}</td>
-                <td>{book.member}</td>
-                <td>{book.overdue}</td>
-                <td>{book.fines}</td>
-                <td>
-                  <button className="delete-button" onClick={() => handleDeleteOverdue(book.id)}>
-                    Delete
-                  </button>
-                </td>
+        <div className="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>MEMBER</th>
+                <th>OVERDUE</th>
+                <th>FINES</th>
+                <th>ACTIONS</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {overdueBooks.map(book => (
+                <tr key={book.id}>
+                  <td>#{book.id}</td>
+                  <td>{book.member}</td>
+                  <td><span className="overdue-badge">{book.overdue}</span></td>
+                  <td className="fines-amount">{book.fines}</td>
+                  <td>
+                    <button className="delete-button" onClick={() => handleDeleteOverdue(book.id)}>
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
 
       <button className="back-button" onClick={() => navigate('/catalog')}>
