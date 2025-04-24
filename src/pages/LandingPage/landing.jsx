@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './LandingPage.css';
-import libraryImage from './landingmage.png';
 import logo from './logo.jpg';
 
 const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticated }) => {
@@ -217,9 +216,7 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
                 </nav>
             </div>
             
-            <div className="image-section">
-                <img src={libraryImage} alt="Modern library interior" className="library-image" />
-            </div>
+            
         </div>
     );
 };
