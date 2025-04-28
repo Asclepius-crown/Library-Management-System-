@@ -3,16 +3,17 @@ import { useNavigate } from 'react-router-dom';
 import './CatalogPage.css';
 import logo from './logo.jpg';
 
+
 const CatalogPage = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
 
   const [books, setBooks] = useState(() => {
     const savedBooks = localStorage.getItem('libraryBooks');
     return savedBooks ? JSON.parse(savedBooks) : [
-      { id: 1, title: 'Let Us C++', author: 'Yashavant Kanetkar', isbn: '978-8183331630', location: 'Shelf A1', status: 'Available', publishedCount: 12, borrower: '', dueDate: '' },
-      { id: 2, title: 'BlockChain Quick Reference', author: 'Brenn Hill, Samanyu Chopra, Paul Valencourt', isbn: '978-1788995788', location: 'Shelf B2', status: 'Borrowed', publishedCount: 8, borrower: 'John Doe', dueDate: '2023-12-15' },
-      { id: 3, title: 'Game Programming Pattern', author: 'Robert Nystrom', isbn: '978-0990582908', location: 'Shelf C3', status: 'Borrowed', publishedCount: 15, borrower: '', dueDate: '' },
-      { id: 4, title: 'Building Android Project with Kotlin', author: 'Pankaj Kumar', isbn: '978-1484268145', location: 'Shelf D4', status: 'Available', publishedCount: 5, borrower: '', dueDate: '' },
+      { id: 1, title: 'Let Us C++', author: 'Yashavant Kanetkar', isbn: '978-8183331630', location: 'Shelf A1', status: 'Available', publishedCount: 12, borrower: '', dueDate: '', category: 'Computer Science' },
+      { id: 2, title: 'BlockChain Quick Reference', author: 'Brenn Hill, Samanyu Chopra, Paul Valencourt', isbn: '978-1788995788', location: 'Shelf B2', status: 'Borrowed', publishedCount: 8, borrower: 'John Doe', dueDate: '2023-12-15', category: 'Computer Science' },
+      { id: 3, title: 'Game Programming Pattern', author: 'Robert Nystrom', isbn: '978-0990582908', location: 'Shelf C3', status: 'Borrowed', publishedCount: 15, borrower: '', dueDate: '', category: 'Computer Science' },
+      { id: 4, title: 'Building Android Project with Kotlin', author: 'Pankaj Kumar', isbn: '978-1484268145', location: 'Shelf D4', status: 'Available', publishedCount: 5, borrower: '', dueDate: '', category: 'Computer Science' },
     ];
   });
 
@@ -23,7 +24,8 @@ const CatalogPage = ({ setIsAuthenticated }) => {
     isbn: '',
     location: '',
     borrower: '',
-    dueDate: ''
+    dueDate: '',
+    category: ''
   });
 
   const [editingBook, setEditingBook] = useState(null);
@@ -39,7 +41,8 @@ const CatalogPage = ({ setIsAuthenticated }) => {
   }, [books]);
 
   const filteredBooks = books.filter(book => {
-    const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         book.author.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesAvailability = selectedAvailability === 'All' || book.status === selectedAvailability;
     const matchesCategory = selectedCategory === 'All' || book.category === selectedCategory;
     return matchesSearch && matchesAvailability && matchesCategory;
@@ -151,7 +154,8 @@ const CatalogPage = ({ setIsAuthenticated }) => {
       isbn: '',
       location: '',
       borrower: '',
-      dueDate: ''
+      dueDate: '',
+      category: ''
     });
     setErrors({});
     setCurrentlyEditingId(null);
@@ -210,7 +214,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                 />
               </div>
               <button className="primary-button" onClick={() => setEditingBook({})}>
-                <i className="fas fa-plus"></i> Add Book
+                <i className="fas fa-plus-circle"></i> Add Book
               </button>
             </div>
           </div>
@@ -252,26 +256,46 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                     <p><strong>Author:</strong> {book.author}</p>
                     <p><strong>ISBN:</strong> {book.isbn}</p>
                     <p><strong>Location:</strong> {book.location}</p>
+                    <p><strong>Category:</strong> {book.category || 'Not specified'}</p>
                     {book.status === 'Borrowed' && (
                       <>
                         <p><strong>Borrower:</strong> {book.borrower}</p>
-                        <p><strong>Due:</strong> {new Date(book.dueDate).toLocaleDateString()}</p>
+                        <p><strong>Due:</strong> {book.dueDate ? new Date(book.dueDate).toLocaleDateString() : 'Not specified'}</p>
                       </>
                     )}
                   </div>
                   <div className="card-actions">
-                    <button className="icon-button" onClick={() => {
-                      setEditingBook(book);
-                      setNewBook(book);
-                      setCurrentlyEditingId(book.id);
-                    }}>
-                      <i className="fas fa-edit"></i>
+                    <button 
+                      className="icon-button" 
+                      title="Edit" 
+                      onClick={() => {
+                        setEditingBook(book);
+                        setNewBook(book);
+                        setCurrentlyEditingId(book.id);
+                      }}
+                    >
+                      <i className="fas fa-pen"></i>
                     </button>
-                    <button className="icon-button" onClick={() => handleStatusChange(book.id)}>
+                    <button 
+                      className="icon-button" 
+                      title="Toggle Status" 
+                      onClick={() => handleStatusChange(book.id)}
+                    >
                       <i className="fas fa-exchange-alt"></i>
                     </button>
-                    <button className="icon-button danger" onClick={() => handleDeleteBook(book.id)}>
+                    <button 
+                      className="icon-button danger" 
+                      title="Delete" 
+                      onClick={() => handleDeleteBook(book.id)}
+                    >
                       <i className="fas fa-trash"></i>
+                    </button>
+                    <button 
+                      className="icon-button" 
+                      title="Advanced Edit" 
+                      onClick={() => handleManualUpdate(book.id)}
+                    >
+                      <i className="fas fa-cog"></i>
                     </button>
                   </div>
                 </div>
@@ -283,7 +307,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
             <div className="modal-overlay">
               <div className="modal-card">
                 <div className="modal-header">
-                  <h3>{manualUpdateMode ? 'Update Book' : editingBook ? 'Edit Book' : 'Add New Book'}</h3>
+                  <h3>{manualUpdateMode ? 'Advanced Book Edit' : editingBook ? 'Edit Book' : 'Add New Book'}</h3>
                   <button className="close-button" onClick={resetForm}>
                     <i className="fas fa-times"></i>
                   </button>
@@ -332,6 +356,13 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                   {manualUpdateMode && (
                     <>
                       <div className="form-group">
+                        <label>Status</label>
+                        <select name="status" value={newBook.status} onChange={handleInputChange}>
+                          <option value="Available">Available</option>
+                          <option value="Borrowed">Borrowed</option>
+                        </select>
+                      </div>
+                      <div className="form-group">
                         <label>Borrower</label>
                         <input type="text" name="borrower" value={newBook.borrower} onChange={handleInputChange} />
                       </div>
@@ -345,7 +376,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                 <div className="modal-footer">
                   <button className="secondary-button" onClick={resetForm}>Cancel</button>
                   <button className="primary-button" onClick={manualUpdateMode ? handleSaveManualUpdate : editingBook ? handleUpdateBook : handleAddBook}>
-                    {manualUpdateMode ? 'Update' : editingBook ? 'Save Changes' : 'Add Book'}
+                    {manualUpdateMode ? 'Save Changes' : editingBook ? 'Update Book' : 'Add Book'}
                   </button>
                 </div>
               </div>
