@@ -212,6 +212,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
               <li className={selectedCategory === 'Aerospace Engineering' ? 'active' : ''} onClick={() => filterByCategory('Aerospace Engineering')}>Aerospace Engineering</li>
               <li className={selectedCategory === 'Biomedical Engineering' ? 'active' : ''} onClick={() => filterByCategory('Biomedical Engineering')}>Biomedical Engineering</li>
               <li className={selectedCategory === 'Environmental Engineering' ? 'active' : ''} onClick={() => filterByCategory('Environmental Engineering')}>Environmental Engineering</li>
+              <li className={selectedCategory === 'Humanity' ? 'active' : ''} onClick={() => filterByCategory('Humanity')}>Humanity</li>
             </ul>
           </div>
         </div>
@@ -402,6 +403,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                       <option value="Aerospace Engineering">Aerospace Engineering</option>
                       <option value="Biomedical Engineering">Biomedical Engineering</option>
                       <option value="Environmental Engineering">Environmental Engineering</option>
+                      <option value="Humanity">Humanity</option>
                     </select>
                   </div>
                   {manualUpdateMode && (

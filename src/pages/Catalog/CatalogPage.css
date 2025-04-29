@@ -296,7 +296,7 @@ body {
 }
 
 .card-body p strong {
-  color: #8d99ae;
+  color: gray;
 }
 
 .card-actions {
@@ -403,7 +403,7 @@ body {
 
 .form-group input {
   width: fit-content;
-  max-width: 100%;
+  max-width: 100%; 
   padding: 10px;
   border: 1px solid #444;
   border-radius: 6px;

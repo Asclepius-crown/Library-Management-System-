@@ -257,6 +257,7 @@ tr:hover {
   color: #ff5252;
 }
 
+/* Delete Button Styles */
 .delete-button {
   width: 100px;
   height: 36px;
@@ -270,22 +271,23 @@ tr:hover {
   position: relative;
   overflow: hidden;
   padding: 0;
-
+  transition: background-color 0.2s ease;
 }
 
 .delete-button, .delete-button span {
   transition: 200ms;
 }
 
-.delete-button  .text  {
+.delete-button .text {
   transform: translateX(20px);
   color: white;
-  font-weight:bold;
+  font-weight: bold;
   font-size: 0.8rem;
   white-space: nowrap;
+  padding-left: 12px;
 }
 
-.delete-button  .icon {
+.delete-button .icon {
   position: absolute;
   border-left: 1px solid #c41b1b;
   transform: translateX(70px);
@@ -313,16 +315,12 @@ tr:hover {
   width: 100px;
   border-left: none;
   transform: translateX(0);
-}
-
-.delete-button:focus {
   outline: none;
 }
 
-.delete-button:active  .icon svg {
-  transform: scale(0.8)
+.delete-button:active .icon svg {
+  transform: scale(0.8);
 }
-
 .back-button {
   margin-top: 2rem;
   padding: 0.75rem 1.5rem;
