@@ -107,7 +107,7 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
                         
                         <form onSubmit={handleSubmit}>
                             {activeForm === 'register' && (
-                                <div className="form-group">
+                                <div className="form-groups">
                                     <input
                                         type="text"
                                         name="name"
@@ -120,7 +120,7 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
                                 </div>
                             )}
                             
-                            <div className="form-group">
+                            <div className="form-groups">
                                 <input
                                     type="email"
                                     name="email"
@@ -132,7 +132,7 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
                                 {errors.email && <span className="error-message">{errors.email}</span>}
                             </div>
                             
-                            <div className="form-group">
+                            <div className="form-groups">
                                 <input
                                     type="password"
                                     name="password"
@@ -145,7 +145,7 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
                             </div>
                             
                             {activeForm === 'register' && (
-                                <div className="form-group">
+                                <div className="form-groups">
                                     <input
                                         type="password"
                                         name="confirmPassword"

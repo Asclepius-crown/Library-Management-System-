@@ -12,7 +12,7 @@
 .database-page {
   padding: 2rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background-color: #f8fafc;
+  background-color: black;
   color: var(--text-color);
   min-height: 100vh;
 }
@@ -27,7 +27,7 @@
   margin: 0 0 0 1rem;
   font-size: 1.8rem;
   font-weight: 600;
-  color: var(--text-color);
+  color: #8d99ae;
 }
 
 .logo {
@@ -69,7 +69,7 @@
   margin: 0;
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--text-color);
+  color: #8d99ae;
 }
 
 .card-icon {
@@ -178,6 +178,7 @@
 }
 
 .form-group input {
+  width: fit-content;
   padding: 0.75rem;
   border: 1px solid var(--border-color);
   border-radius: 8px;

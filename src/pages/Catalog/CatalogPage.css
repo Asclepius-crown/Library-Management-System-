@@ -1,5 +1,4 @@
 /* Reset and base styles */
-
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 * {
   margin: 0;
@@ -16,6 +15,7 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background-color: black;
 }
 
 /* Header styles */
@@ -81,6 +81,14 @@ body {
   flex: 1;
   padding: 25px;
   background-color: black;
+  position: relative;
+}
+
+.Squares {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0.1;
 }
 
 /* Sidebar styles */
@@ -155,6 +163,7 @@ body {
   font-size: 14px;
   transition: all 0.2s;
   background: transparent;
+  color: white;
 }
 
 .search-box input:focus {
@@ -254,7 +263,7 @@ body {
 
 .card-header h3 {
   font-size: 16px;
-  color: #333;
+  color: #8d99ae;
   flex: 1;
 }
 
@@ -281,13 +290,13 @@ body {
 
 .card-body p {
   font-size: 14px;
-  color: #555;
+  color: #8d99ae;
   margin-bottom: 8px;
   line-height: 1.4;
 }
 
 .card-body p strong {
-  color: #333;
+  color: #8d99ae;
 }
 
 .card-actions {
@@ -335,7 +344,7 @@ body {
 }
 
 .modal-card {
-  background-color: white;
+  background-color: #222;
   border-radius: 8px;
   width: 500px;
   max-width: 90%;
@@ -349,12 +358,12 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 20px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #444;
 }
 
 .modal-header h3 {
   font-size: 18px;
-  color: #333;
+  color: #8d99ae;
 }
 
 .close-button {
@@ -373,8 +382,8 @@ body {
 }
 
 .close-button:hover {
-  background-color: #f0f0f0;
-  color: #666;
+  background-color: #444;
+  color: #ccc;
 }
 
 .modal-body {
@@ -389,15 +398,18 @@ body {
   display: block;
   margin-bottom: 8px;
   font-size: 14px;
-  color: #666;
+  color: #8d99ae;
 }
 
 .form-group input {
-  width: 100%;
+  width: fit-content;
+  max-width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #444;
   border-radius: 6px;
   font-size: 14px;
+  background-color: #333;
+  color: white;
 }
 
 .form-group input:focus {
@@ -428,15 +440,15 @@ body {
 
 .modal-footer {
   padding: 15px 20px;
-  border-top: 1px solid #eee;
+  border-top: 1px solid #444;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
 }
 
 .secondary-button {
-  background-color: #f0f0f0;
-  color: #333;
+  background-color: #444;
+  color: #ccc;
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -446,7 +458,7 @@ body {
 }
 
 .secondary-button:hover {
-  background-color: #e0e0e0;
+  background-color: #555;
 }
 
 /* Responsive adjustments */
@@ -468,8 +480,7 @@ body {
   .sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid black;
-
+    border-bottom: 1px solid #444;
   }
   
   .content-header {
@@ -480,14 +491,141 @@ body {
   
   .header-actions {
     width: 100%;
+    flex-direction: row;
   }
   
   .search-box input {
     width: 100%;
   }
+
+  .header-section {
+    padding: 15px;
+  }
+
+  .content-area {
+    padding: 15px;
+  }
+
+  .books-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-card {
+    width: 95%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
-/* Add these at the end of your existing CSS file */
+@media (max-width: 600px) {
+  .header-section {
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .header-left {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .logout-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .sidebar {
+    padding: 15px;
+  }
+  
+  .sidebar-section h3 {
+    font-size: 14px;
+  }
+  
+  .sidebar-section li {
+    font-size: 13px;
+  }
+  
+  .content-header h2 {
+    font-size: 18px;
+  }
+  
+  .header-actions {
+    flex-direction: row;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .search-box {
+    flex: 1;
+  }
+  
+  .search-box input {
+    width: 100% !important;
+  }
+  
+  .primary-button {
+    padding: 10px;
+    width: auto;
+  }
+  
+  .book-card {
+    padding: 15px;
+  }
+  
+  .card-header h3 {
+    font-size: 14px;
+  }
+  
+  .card-body p {
+    font-size: 12px;
+  }
+  
+  .card-actions {
+    justify-content: space-between;
+  }
+  
+  .icon-button {
+    width: 28px;
+    height: 28px;
+  }
+
+  .search-box.mobile-search-visible {
+    position: absolute;
+    top: 70px;
+    left: 15px;
+    right: 15px;
+    z-index: 100;
+    background: #222;
+    padding: 10px;
+    border-radius: 6px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  .search-box.mobile-search-visible input {
+    width: 100%;
+    padding-left: 15px;
+  }
+
+  .search-box.mobile-search-visible i {
+    position: static;
+    margin-right: 10px;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 768px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+  .books-grid {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
 
 /* Slightly adjust sidebar spacing for longer category names */
 .sidebar-section li {
@@ -515,10 +653,11 @@ body {
 .modal-body select {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #444;
   border-radius: 6px;
   font-size: 14px;
-  background-color: white;
+  background-color: #333;
+  color: white;
 }
 
 .modal-body select:focus {
@@ -527,3 +666,10 @@ body {
   box-shadow: 0 0 0 2px rgba(42, 123, 245, 0.1);
 }
 
+.squares-canvas {
+  width: 100%;
+  height: 100%;
+  border: none;
+  display: block;
+  pointer-events: none;
+}

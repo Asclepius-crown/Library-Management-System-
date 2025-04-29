@@ -2,10 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CatalogPage.css';
 import logo from './logo.jpg';
-
+import { Pencil } from 'lucide-react';
+import { ListCollapse } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
+import { PencilRuler } from 'lucide-react';
+import Squares from './Squares/Squares.jsx';
 
 const CatalogPage = ({ setIsAuthenticated }) => {
   const navigate = useNavigate();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   const [books, setBooks] = useState(() => {
     const savedBooks = localStorage.getItem('libraryBooks');
@@ -35,6 +40,15 @@ const CatalogPage = ({ setIsAuthenticated }) => {
   const [manualUpdateMode, setManualUpdateMode] = useState(false);
   const [currentlyEditingId, setCurrentlyEditingId] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('All');
+  const [showMobileSearch, setShowMobileSearch] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('libraryBooks', JSON.stringify(books));
@@ -159,6 +173,8 @@ const CatalogPage = ({ setIsAuthenticated }) => {
     });
     setErrors({});
     setCurrentlyEditingId(null);
+    setManualUpdateMode(false);
+    setShowMobileSearch(false);
   };
 
   return (
@@ -169,7 +185,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
           <h1 className="app-title">Athenaeum</h1>
         </div>
         <button className="logout-button" onClick={handleLogout}>
-          <i className="fas fa-sign-out-alt"></i> Logout
+          <i className="fas fa-sign-out-alt"></i> {!isMobile && 'Logout'}
         </button>
       </div>
 
@@ -201,20 +217,53 @@ const CatalogPage = ({ setIsAuthenticated }) => {
         </div>
 
         <div className="content-area">
+          <Squares 
+            className="Squares"
+            speed={0.5} 
+            squareSize={40}
+            direction='diagonal'
+            borderColor='#fff'
+            hoverFillColor='#222'
+          />
+          
           <div className="content-header">
             <h2>Book Catalog</h2>
             <div className="header-actions">
-              <div className="search-box">
-                <i className="fas fa-search"></i>
-                <input
-                  type="text"
-                  placeholder="Search books..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                />
+              <div className={`search-box ${showMobileSearch ? 'mobile-search-visible' : ''}`}>
+                {isMobile ? (
+                  <>
+                    <i 
+                      className="fas fa-search" 
+                      onClick={() => setShowMobileSearch(!showMobileSearch)}
+                    ></i>
+                    {showMobileSearch && (
+                      <input
+                        type="text"
+                        placeholder="Search books..."
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                        autoFocus
+                      />
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <i className="fas fa-search"></i>
+                    <input
+                      type="text"
+                      placeholder="Search books..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                    />
+                  </>
+                )}
               </div>
-              <button className="primary-button" onClick={() => setEditingBook({})}>
-                <i className="fas fa-plus-circle"></i> Add Book
+              <button 
+                className="primary-button" 
+                onClick={() => setEditingBook({})}
+                title={isMobile ? 'Add Book' : ''}
+              >
+                <i className="fas fa-plus-circle"></i> {!isMobile && 'Add Book'}
               </button>
             </div>
           </div>
@@ -249,7 +298,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                   <div className="card-header">
                     <h3>{book.title}</h3>
                     <span className={`status-badge ${book.status.toLowerCase()}`}>
-                      {book.status}
+                      {isMobile ? book.status.charAt(0) : book.status}
                     </span>
                   </div>
                   <div className="card-body">
@@ -267,36 +316,38 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                   <div className="card-actions">
                     <button 
                       className="icon-button" 
-                      title="Edit" 
+                      title="Edit"
                       onClick={() => {
                         setEditingBook(book);
                         setNewBook(book);
                         setCurrentlyEditingId(book.id);
                       }}
                     >
-                      <i className="fas fa-pen"></i>
+                      {isMobile ? <i className="fas fa-pen"></i> : <Pencil size={16} color="black" />}
                     </button>
                     <button 
                       className="icon-button" 
-                      title="Toggle Status" 
+                      title="Toggle Status"
                       onClick={() => handleStatusChange(book.id)}
                     >
-                      <i className="fas fa-exchange-alt"></i>
+                      {isMobile ? <i className="fas fa-pen"></i> : <ListCollapse size={16} color="black" />}
                     </button>
                     <button 
                       className="icon-button danger" 
-                      title="Delete" 
+                      title="Delete"
                       onClick={() => handleDeleteBook(book.id)}
                     >
-                      <i className="fas fa-trash"></i>
+                      {isMobile ? <i className="fas fa-pen"></i> : <Trash2 size={16} color="black" />}
                     </button>
-                    <button 
-                      className="icon-button" 
-                      title="Advanced Edit" 
-                      onClick={() => handleManualUpdate(book.id)}
-                    >
-                      <i className="fas fa-cog"></i>
-                    </button>
+                    {!isMobile && (
+                      <button 
+                        className="icon-button" 
+                        title="Advanced Edit"
+                        onClick={() => handleManualUpdate(book.id)}
+                      >
+                        {isMobile ? <i className="fas fa-pen"></i> : <PencilRuler  size={16} color="black" />}
+                      </button>
+                    )}
                   </div>
                 </div>
               ))}
@@ -307,7 +358,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
             <div className="modal-overlay">
               <div className="modal-card">
                 <div className="modal-header">
-                  <h3>{manualUpdateMode ? 'Advanced Book Edit' : editingBook ? 'Edit Book' : 'Add New Book'}</h3>
+                  <h3>{manualUpdateMode ? 'Advanced Edit' : editingBook ? 'Edit Book' : 'Add Book'}</h3>
                   <button className="close-button" onClick={resetForm}>
                     <i className="fas fa-times"></i>
                   </button>
@@ -323,7 +374,7 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                     <input type="text" name="author" value={newBook.author} onChange={handleInputChange} className={errors.author ? 'error' : ''} />
                     {errors.author && <span className="error-message">{errors.author}</span>}
                   </div>
-                  <div className="form-row">
+                  <div className={isMobile ? "" : "form-row"}>
                     <div className="form-group">
                       <label>ISBN</label>
                       <input type="text" name="isbn" value={newBook.isbn} onChange={handleInputChange} className={errors.isbn ? 'error' : ''} />
@@ -374,7 +425,9 @@ const CatalogPage = ({ setIsAuthenticated }) => {
                   )}
                 </div>
                 <div className="modal-footer">
-                  <button className="secondary-button" onClick={resetForm}>Cancel</button>
+                  <button className="secondary-button" onClick={resetForm}>
+                    Cancel
+                  </button>
                   <button className="primary-button" onClick={manualUpdateMode ? handleSaveManualUpdate : editingBook ? handleUpdateBook : handleAddBook}>
                     {manualUpdateMode ? 'Save Changes' : editingBook ? 'Update Book' : 'Add Book'}
                   </button>
