@@ -5,7 +5,8 @@ import CatalogPage from './pages/Catalog/CatalogPage.jsx';
 import DatabasePage from './pages/DatabasePage/DatabasePage.jsx';
 import BorrowedStudentsPage from './pages/Borrowedstudent/BorrowedStudentsPage.jsx';
 import DigitalLibraryPage from './pages/DigitalLibrary/DigitalLibraryPage.jsx';
-import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
+import React from 'react';
+// import NotFoundPage from './pages/NotFoundPage/NotFoundPage.jsx';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -68,7 +69,7 @@ function App() {
             </ProtectedRoute>
           } 
         />
-        <Route path="*" element={<NotFoundPage />} />
+        {/* <Route path="*" element={<NotFoundPage />} /> */}
       </Routes>
     </Router>
   );

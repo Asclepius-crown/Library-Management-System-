@@ -10,7 +10,7 @@ const DatabasePage = () => {
     return saved ? JSON.parse(saved) : [
       { id: 22982, member: 'Amit Raj', overdue: '3 days', fines: 'Rs100.00' },
       { id: 22818, member: 'Keahav Raj', overdue: '3 days', fines: 'Rs100.00' },
-      { id: 22760, member: 'Neha Kumari', overdue: '4 days', fines: 'Rs120.00' }
+      { id: 22760, member: 'Neha Kumari', overdue: '4 days', fines: 'Rs120.00' },
     ];
   });
 
