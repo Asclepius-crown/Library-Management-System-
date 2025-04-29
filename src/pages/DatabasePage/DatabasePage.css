@@ -101,6 +101,8 @@
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.2s ease;
+  background-color: transparent;
+  color: white;
 }
 
 .stats-input input:focus {
@@ -222,7 +224,7 @@
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: white;
+  background-color: transparent;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -231,6 +233,7 @@ th, td {
   padding: 1rem;
   text-align: left;
   border-bottom: 1px solid var(--border-color);
+  color: white;
 }
 
 th {
@@ -247,7 +250,7 @@ tr:hover {
 }
 
 .overdue-badge {
-  background-color: #fff0f0;
+  background-color: transparent;
   color: #ff5252;
   padding: 0.25rem 0.5rem;
   border-radius: 4px;
@@ -267,7 +270,7 @@ tr:hover {
   cursor: pointer;
   display: flex;
   align-items: center;
-  background: #e62222;
+  background: #e62222;;
   border: none;
   border-radius: 8px;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.15);
@@ -327,14 +330,15 @@ tr:hover {
 .back-button {
   margin-top: 2rem;
   padding: 0.75rem 1.5rem;
-  background-color: var(--secondary-color);
-  color: var(--text-color);
+  background-color:	rgba(0, 0, 0, 0.25);
+  color: white;
   border: none;
   border-radius: 8px;
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  
 }
 
 .back-button:hover {
