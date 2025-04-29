@@ -13,7 +13,7 @@
   padding: 2rem;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
   background-color: black;
-  color: var(--text-color);
+  color: white;
   min-height: 100vh;
 }
 
@@ -46,7 +46,8 @@
 }
 
 .dashboard-card {
-  background-color: white;
+  background: rgba(30, 30, 30, 0.7);
+  border: 1px solid var(--border-dark);;
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -130,7 +131,8 @@
 }
 
 .overdue-books-container {
-  background-color: white;
+  background: rgba(30, 30, 30, 0.7);
+  border: 1px solid var(--border-dark);
   border-radius: 12px;
   padding: 1.5rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
@@ -138,6 +140,7 @@
 
 .section-header {
   margin-bottom: 1.5rem;
+  
 }
 
 .section-header h2 {
@@ -153,7 +156,7 @@
 }
 
 .add-overdue-form {
-  background-color: var(--secondary-color);
+  background-color: transparent ;
   border-radius: 8px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -231,7 +234,7 @@ th, td {
 }
 
 th {
-  background-color: var(--secondary-color);
+  background-color:transparent;
   font-weight: 600;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -240,7 +243,7 @@ th {
 }
 
 tr:hover {
-  background-color: #f8fafc;
+  background-color: transparent;
 }
 
 .overdue-badge {
@@ -258,7 +261,7 @@ tr:hover {
 }
 
 /* Delete Button Styles */
-.delete-button {
+.delete-button  {
   width: 100px;
   height: 36px;
   cursor: pointer;

@@ -176,7 +176,7 @@ const DatabasePage = () => {
                   <td><span className="overdue-badge">{book.overdue}</span></td>
                   <td className="fines-amount">{book.fines}</td>
                   <td>
-                  <button className="delete-button" onClick={() => handleDeleteOverdue(book.id)}>
+                  <button className="delete-button 1" onClick={() => handleDeleteOverdue(book.id)}>
                     <span className="text">Delete</span>
                      <span className="icon">
                      <svg viewBox="0 0 24 24" width="24" height="24">

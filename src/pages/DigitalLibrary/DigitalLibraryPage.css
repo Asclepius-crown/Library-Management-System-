@@ -1,7 +1,7 @@
 .digital-library-container {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
-    background-color: #f5f7fa;
+    background-color: black;
     display: flex;
     flex-direction: column;
   }
