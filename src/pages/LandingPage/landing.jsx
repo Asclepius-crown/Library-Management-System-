@@ -1,80 +1,90 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../context/AuthContext';
 import './LandingPage.css';
 import logo from './logo.jpg';
 
-const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticated }) => {
-    const navigate = useNavigate();
-    const [activeForm, setActiveForm] = useState(
-        showLogin ? 'login' : showRegister ? 'register' : null
-    );
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        password: '',
-        confirmPassword: ''
-    });
-    const [errors, setErrors] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
+const LandingPage = ({ showLogin = false, showRegister = false }) => {
+  const navigate = useNavigate();
+  const { login, register, isAuthenticated } = useContext(AuthContext);
+  const [activeForm, setActiveForm] = useState(
+    showLogin ? 'login' : showRegister ? 'register' : null
+  );
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
-    const validateForm = () => {
-        const newErrors = {};
-        
-        if (!formData.email) {
-            newErrors.email = 'Email is required';
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = 'Email is invalid';
-        }
-        
-        if (!formData.password) {
-            newErrors.password = 'Password is required';
-        } else if (formData.password.length < 6) {
-            newErrors.password = 'Password must be at least 6 characters';
-        }
-        
-        if (activeForm === 'register') {
-            if (!formData.name) {
-                newErrors.name = 'Name is required';
-            }
-            if (formData.password !== formData.confirmPassword) {
-                newErrors.confirmPassword = 'Passwords must match';
-            }
-        }
-        
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+    }
+    
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+    }
+    
+    if (activeForm === 'register') {
+      if (!formData.name) {
+        newErrors.name = 'Name is required';
+      }
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Passwords must match';
+      }
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        if (!validateForm()) return;
-        
-        setIsLoading(true);
-        
-        try {
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            setIsAuthenticated(true);
-            navigate('/catalog');
-        } catch (error) {
-            setErrors({ submit: error.message });
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+    
+    setIsLoading(true);
+    
+    try {
+      if (activeForm === 'login') {
+        await login(formData.email, formData.password);
+        navigate('/catalog');
+      } else {
+        await register({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password
+        });
+        navigate('/catalog');
+      }
+    } catch (error) {
+      setErrors({ submit: error.message });
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({ ...prev, [name]: value }));
-    };
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
-    const handleAuthClick = (type) => {
-        setActiveForm(type);
-        navigate(`/${type}`);
-    };
+  const handleAuthClick = (type) => {
+    setActiveForm(type);
+    navigate(`/${type}`);
+  };
 
-    return (
-        <div className="landing-container">
-            <div className="auth-buttons">
+  return (
+    <div className="landing-container">
+      <div className="auth-buttons">
                 <button 
                     className={`auth-btn login-btn ${activeForm === 'login' ? 'active' : ''}`}
                     onClick={() => handleAuthClick('login')}
@@ -217,8 +227,8 @@ const LandingPage = ({ showLogin = false, showRegister = false, setIsAuthenticat
             </div>
             
             
-        </div>
-    );
+    </div>
+  );
 };
 
 export default LandingPage;
