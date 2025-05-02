@@ -1,6 +1,6 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../context/AuthContext';
+// import { AuthContext } from 'src/context/AuthContext.js';
 import './LandingPage.css';
 import logo from './logo.jpg';
 
@@ -18,6 +18,13 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
   });
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/catalog');
+    }
+  }, [isAuthenticated, navigate]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -56,14 +63,14 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
     try {
       if (activeForm === 'login') {
         await login(formData.email, formData.password);
-        navigate('/catalog');
+        // No need to navigate here - the useEffect will handle it
       } else {
         await register({
           name: formData.name,
           email: formData.email,
           password: formData.password
         });
-        navigate('/catalog');
+        // No need to navigate here - the useEffect will handle it
       }
     } catch (error) {
       setErrors({ submit: error.message });
@@ -85,148 +92,146 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
   return (
     <div className="landing-container">
       <div className="auth-buttons">
-                <button 
-                    className={`auth-btn login-btn ${activeForm === 'login' ? 'active' : ''}`}
-                    onClick={() => handleAuthClick('login')}
-                >
-                    Login
-                </button>
-                <button 
-                    className={`auth-btn register-btn ${activeForm === 'register' ? 'active' : ''}`}
-                    onClick={() => handleAuthClick('register')}
-                >
-                    Register
-                </button>
-            </div>
+        <button 
+          className={`auth-btn login-btn ${activeForm === 'login' ? 'active' : ''}`}
+          onClick={() => handleAuthClick('login')}
+        >
+          Login
+        </button>
+        <button 
+          className={`auth-btn register-btn ${activeForm === 'register' ? 'active' : ''}`}
+          onClick={() => handleAuthClick('register')}
+        >
+          Register
+        </button>
+      </div>
 
-            {(activeForm === 'login' || activeForm === 'register') && (
-                <div className="auth-modal">
-                    <div className="auth-form">
-                        <button 
-                            className="close-btn"
-                            onClick={() => {
-                                setActiveForm(null);
-                                navigate('/');
-                            }}
-                            aria-label="Close modal"
-                        >
-                            ×
-                        </button>
-                        
-                        <h3>{activeForm === 'login' ? 'Login' : 'Register'}</h3>
-                        
-                        <form onSubmit={handleSubmit}>
-                            {activeForm === 'register' && (
-                                <div className="form-groups">
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        value={formData.name}
-                                        onChange={handleInputChange}
-                                        placeholder="Full Name"
-                                        className={errors.name ? 'error' : ''}
-                                    />
-                                    {errors.name && <span className="error-message">{errors.name}</span>}
-                                </div>
-                            )}
-                            
-                            <div className="form-groups">
-                                <input
-                                    type="email"
-                                    name="email"
-                                    value={formData.email}
-                                    onChange={handleInputChange}
-                                    placeholder="Email"
-                                    className={errors.email ? 'error' : ''}
-                                />
-                                {errors.email && <span className="error-message">{errors.email}</span>}
-                            </div>
-                            
-                            <div className="form-groups">
-                                <input
-                                    type="password"
-                                    name="password"
-                                    value={formData.password}
-                                    onChange={handleInputChange}
-                                    placeholder="Password"
-                                    className={errors.password ? 'error' : ''}
-                                />
-                                {errors.password && <span className="error-message">{errors.password}</span>}
-                            </div>
-                            
-                            {activeForm === 'register' && (
-                                <div className="form-groups">
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        value={formData.confirmPassword}
-                                        onChange={handleInputChange}
-                                        placeholder="Confirm Password"
-                                        className={errors.confirmPassword ? 'error' : ''}
-                                    />
-                                    {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
-                                </div>
-                            )}
-                            
-                            {errors.submit && <div className="submit-error">{errors.submit}</div>}
-                            
-                            <button type="submit" className="submit-btn" disabled={isLoading}>
-                                {isLoading ? 'Processing...' : activeForm === 'login' ? 'Login' : 'Register'}
-                            </button>
-                        </form>
-                    </div>
+      {(activeForm === 'login' || activeForm === 'register') && (
+        <div className="auth-modal">
+          <div className="auth-form">
+            <button 
+              className="close-btn"
+              onClick={() => {
+                setActiveForm(null);
+                navigate('/');
+              }}
+              aria-label="Close modal"
+            >
+              ×
+            </button>
+            
+            <h3>{activeForm === 'login' ? 'Login' : 'Register'}</h3>
+            
+            <form onSubmit={handleSubmit}>
+              {activeForm === 'register' && (
+                <div className="form-group">
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    placeholder="Full Name"
+                    className={errors.name ? 'error' : ''}
+                  />
+                  {errors.name && <span className="error-message">{errors.name}</span>}
                 </div>
-            )}
-            
-            <div className="content-section">
-                <header className="landing-header">
-                    <img src={logo} alt="Athenaeum Logo" className="logo" />
-                    <h1>Welcome to the Athenaeum</h1>
-                    <p className="tagline">Your gateway to knowledge and resources</p>
-                </header>
-                
-                <div className="divider"></div>
-                
-                <nav className="landing-nav">
-                    <button 
-                        className="nav-button"
-                        onClick={() => navigate('/catalog')}
-                    >
-                        <span className="button-icon">📚</span>
-                        <span className="button-text">Catalog</span>
-                        <p className="button-description">Browse our collection of books</p>
-                    </button>
-                    
-                    <button 
-                        className="nav-button"
-                        onClick={() => navigate('/digital-library')}
-                    >
-                        <span className="button-icon">💻</span>
-                        <span className="button-text">Digital Library</span>
-                        <p className="button-description">Access our digital resources</p>
-                    </button>
-                    
-                    <button 
-                        className="nav-button"
-                        onClick={() => navigate('/database')}
-                    >
-                        <span className="button-icon">📊</span>
-                        <span className="button-text">Database</span>
-                        <p className="button-description">View library statistics</p>
-                    </button>
-                    
-                    <button 
-                        className="nav-button"
-                        onClick={() => navigate('/borrowed-students')}
-                    >
-                        <span className="button-icon">👥</span>
-                        <span className="button-text">Borrowed Books</span>
-                        <p className="button-description">Track borrowed items</p>
-                    </button>
-                </nav>
-            </div>
-            
-            
+              )}
+              
+              <div className="form-group">
+                <input
+                  type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="Email"
+                  className={errors.email ? 'error' : ''}
+                />
+                {errors.email && <span className="error-message">{errors.email}</span>}
+              </div>
+              
+              <div className="form-group">
+                <input
+                  type="password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  placeholder="Password"
+                  className={errors.password ? 'error' : ''}
+                />
+                {errors.password && <span className="error-message">{errors.password}</span>}
+              </div>
+              
+              {activeForm === 'register' && (
+                <div className="form-group">
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    placeholder="Confirm Password"
+                    className={errors.confirmPassword ? 'error' : ''}
+                  />
+                  {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+                </div>
+              )}
+              
+              {errors.submit && <div className="submit-error">{errors.submit}</div>}
+              
+              <button type="submit" className="submit-btn" disabled={isLoading}>
+                {isLoading ? 'Processing...' : activeForm === 'login' ? 'Login' : 'Register'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+      
+      <div className="content-section">
+        <header className="landing-header">
+          <img src={logo} alt="Athenaeum Logo" className="logo" />
+          <h1>Welcome to the Athenaeum</h1>
+          <p className="tagline">Your gateway to knowledge and resources</p>
+        </header>
+        
+        <div className="divider"></div>
+        
+        <nav className="landing-nav">
+          <button 
+            className="nav-button"
+            onClick={() => navigate('/catalog')}
+          >
+            <span className="button-icon">📚</span>
+            <span className="button-text">Catalog</span>
+            <p className="button-description">Browse our collection of books</p>
+          </button>
+          
+          <button 
+            className="nav-button"
+            onClick={() => navigate('/digital-library')}
+          >
+            <span className="button-icon">💻</span>
+            <span className="button-text">Digital Library</span>
+            <p className="button-description">Access our digital resources</p>
+          </button>
+          
+          <button 
+            className="nav-button"
+            onClick={() => navigate('/database')}
+          >
+            <span className="button-icon">📊</span>
+            <span className="button-text">Database</span>
+            <p className="button-description">View library statistics</p>
+          </button>
+          
+          <button 
+            className="nav-button"
+            onClick={() => navigate('/borrowed-students')}
+          >
+            <span className="button-icon">👥</span>
+            <span className="button-text">Borrowed Books</span>
+            <p className="button-description">Track borrowed items</p>
+          </button>
+        </nav>
+      </div>
     </div>
   );
 };

@@ -16,38 +16,38 @@ const BorrowedStudentsPage = ({ setIsAuthenticated }) => {
   const [borrowedBooks] = useState([
     {
       id: 1,
-      studentName: 'Nick Adams',
-      studentId: 'S739012',
-      bookTitle: 'The Great Gatsby',
-      borrowDate: '04/01/2024',
-      dueDate: '04/10/2024',
+      studentName: 'Raja Kumar',
+      studentId: 'GECB123',
+      bookTitle: 'Let Us C',
+      borrowDate: '04/01/2025',
+      dueDate: '04/05/2025',
       returnStatus: 'Overdue'
     },
     {
       id: 2,
-      studentName: 'Emma Johnson',
-      studentId: 'S739012',
-      bookTitle: '1984',
-      borrowDate: '04/01/2024',
-      dueDate: '04/15/2024',
+      studentName: 'Akshay Kumar',
+      studentId: 'GECB234',
+      bookTitle: 'Math',
+      borrowDate:'04/01/2024',
+      dueDate: '04/05/2025',
       returnStatus: 'Returned'
     },
     {
       id: 3,
-      studentName: 'Alex Williams',
-      studentId: 'S345678',
-      bookTitle: 'Moby-Dick',
-      borrowDate: '04/01/2024',
-      dueDate: '04/02/2024',
+      studentName: 'Kundan Kumar',
+      studentId: 'GECB345',
+      bookTitle: 'Data Structures',
+      borrowDate: '04/01/2025',
+      dueDate: '04/02/2025',
       returnStatus: 'Returned'
     },
     {
       id: 4,
-      studentName: 'Sarah Brown',
-      studentId: 'S901234',
-      bookTitle: 'Hamlet',
-      borrowDate: '04/01/2024',
-      dueDate: '04/04/2024',
+      studentName: 'Sonu Kumar',
+      studentId: 'GEC$%^',
+      bookTitle: 'Digital Logic',
+      borrowDate: '04/01/2025',
+      dueDate: '04/04/2025',
       returnStatus: 'Not Returned'
     }
   ]);
