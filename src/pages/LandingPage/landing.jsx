@@ -1,12 +1,12 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { AuthContext } from 'src/context/AuthContext.js';
+import { useAuth } from '../../hooks/useAuth.jsx';  // ✅ correct import
 import './LandingPage.css';
 import logo from './logo.jpg';
 
 const LandingPage = ({ showLogin = false, showRegister = false }) => {
   const navigate = useNavigate();
-  const { login, register, isAuthenticated } = useContext(AuthContext);
+  const { login, register, isAuthenticated } = useAuth(); // ✅ fixed hook name
   const [activeForm, setActiveForm] = useState(
     showLogin ? 'login' : showRegister ? 'register' : null
   );
@@ -19,7 +19,6 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  // Redirect if already authenticated
   useEffect(() => {
     if (isAuthenticated) {
       navigate('/catalog');
@@ -34,13 +33,13 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email is invalid';
     }
-    
+
     if (!formData.password) {
       newErrors.password = 'Password is required';
     } else if (formData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
     }
-    
+
     if (activeForm === 'register') {
       if (!formData.name) {
         newErrors.name = 'Name is required';
@@ -49,7 +48,7 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
         newErrors.confirmPassword = 'Passwords must match';
       }
     }
-    
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -57,20 +56,18 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
-    
+
     setIsLoading(true);
-    
+
     try {
       if (activeForm === 'login') {
         await login(formData.email, formData.password);
-        // No need to navigate here - the useEffect will handle it
       } else {
         await register({
           name: formData.name,
           email: formData.email,
           password: formData.password
         });
-        // No need to navigate here - the useEffect will handle it
       }
     } catch (error) {
       setErrors({ submit: error.message });
@@ -119,9 +116,9 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
             >
               ×
             </button>
-            
+
             <h3>{activeForm === 'login' ? 'Login' : 'Register'}</h3>
-            
+
             <form onSubmit={handleSubmit}>
               {activeForm === 'register' && (
                 <div className="form-group">
@@ -136,7 +133,7 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
                   {errors.name && <span className="error-message">{errors.name}</span>}
                 </div>
               )}
-              
+
               <div className="form-group">
                 <input
                   type="email"
@@ -148,7 +145,7 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
                 />
                 {errors.email && <span className="error-message">{errors.email}</span>}
               </div>
-              
+
               <div className="form-group">
                 <input
                   type="password"
@@ -160,7 +157,7 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
                 />
                 {errors.password && <span className="error-message">{errors.password}</span>}
               </div>
-              
+
               {activeForm === 'register' && (
                 <div className="form-group">
                   <input
@@ -174,9 +171,9 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
                   {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
                 </div>
               )}
-              
+
               {errors.submit && <div className="submit-error">{errors.submit}</div>}
-              
+
               <button type="submit" className="submit-btn" disabled={isLoading}>
                 {isLoading ? 'Processing...' : activeForm === 'login' ? 'Login' : 'Register'}
               </button>
@@ -184,48 +181,36 @@ const LandingPage = ({ showLogin = false, showRegister = false }) => {
           </div>
         </div>
       )}
-      
+
       <div className="content-section">
         <header className="landing-header">
           <img src={logo} alt="Athenaeum Logo" className="logo" />
           <h1>Welcome to the Athenaeum</h1>
           <p className="tagline">Your gateway to knowledge and resources</p>
         </header>
-        
+
         <div className="divider"></div>
-        
+
         <nav className="landing-nav">
-          <button 
-            className="nav-button"
-            onClick={() => navigate('/catalog')}
-          >
+          <button className="nav-button" onClick={() => navigate('/catalog')}>
             <span className="button-icon">📚</span>
             <span className="button-text">Catalog</span>
             <p className="button-description">Browse our collection of books</p>
           </button>
-          
-          <button 
-            className="nav-button"
-            onClick={() => navigate('/digital-library')}
-          >
+
+          <button className="nav-button" onClick={() => navigate('/digital-library')}>
             <span className="button-icon">💻</span>
             <span className="button-text">Digital Library</span>
             <p className="button-description">Access our digital resources</p>
           </button>
-          
-          <button 
-            className="nav-button"
-            onClick={() => navigate('/database')}
-          >
+
+          <button className="nav-button" onClick={() => navigate('/database')}>
             <span className="button-icon">📊</span>
             <span className="button-text">Database</span>
             <p className="button-description">View library statistics</p>
           </button>
-          
-          <button 
-            className="nav-button"
-            onClick={() => navigate('/borrowed-students')}
-          >
+
+          <button className="nav-button" onClick={() => navigate('/borrowed-students')}>
             <span className="button-icon">👥</span>
             <span className="button-text">Borrowed Books</span>
             <p className="button-description">Track borrowed items</p>
